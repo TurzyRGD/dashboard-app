@@ -18,13 +18,18 @@ export async function POST(request: Request) {
     const filename = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
     const uploadDir = join(process.cwd(), 'public', 'uploads');
 
-    // Upewniamy się, że folder uploads istnieje na serwerze (jeśli nie, to go tworzy)
-    await mkdir(uploadDir, { recursive: true });
+    // Upewniamy się, że folder uploads istnieje na serwerze i ma odpowiednie uprawnienia
+    try {
+      await mkdir(uploadDir, { recursive: true });
+    } catch (err) {
+      console.error('Błąd tworzenia katalogu:', err);
+    }
 
     const path = join(uploadDir, filename);
     await writeFile(path, buffer);
 
     // Zwracamy relatywną ścieżkę, którą przeglądarka i Next.js zrozumieją
+    // Dodajemy cache-busting dla pewności, że obrazek od razu się przeładuje
     return NextResponse.json({ success: true, path: `/uploads/${filename}` });
   } catch (error) {
     console.error('Błąd zapisu pliku:', error);

@@ -21,13 +21,15 @@ ENV NODE_ENV production
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
-# Tworzymy foldery na dane i ustawiamy uprawnienia dla użytkownika node
-RUN mkdir -p data public/uploads && chown -R node:node data public/uploads
-
-# Kopiujemy niezbędne pliki z etapu builder
+# Kopiujemy pliki standalone (zawierają node_modules i serwer)
+COPY --from=builder /app/.next/standalone ./
+# Kopiujemy pliki statyczne i publiczne (standalone ich domyślnie nie zawiera)
+COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
-COPY --from=builder --chown=node:node /app/.next/standalone ./
-COPY --from=builder --chown=node:node /app/.next/static ./.next/static
+
+# Tworzymy foldery na dane i uploady oraz ustawiamy uprawnienia dla użytkownika node
+# Robimy to po skopiowaniu plików, aby mieć pewność, że uprawnienia są poprawne
+RUN mkdir -p data public/uploads && chown -R node:node /app
 
 USER node
 
