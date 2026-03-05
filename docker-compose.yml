@@ -1,0 +1,36 @@
+#version: '3.8'
+
+#services:
+#  dashboard:
+#    build: 
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: nextjs-dashboard
+#    restart: unless-stopped
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      - NODE_ENV=production
+version: '3.8'
+
+services:
+  dashboard:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: nextjs-dashboard
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - dashboard-data:/app/data
+      - dashboard-uploads:/app/public/uploads
+
+# Używamy nazwanych wolumenów Dockera - są bezpieczne i odporne na błędy uprawnień (permissions)
+volumes:
+  dashboard-data:
+    name: dashboard_data
+  dashboard-uploads:
+    name: dashboard_uploads

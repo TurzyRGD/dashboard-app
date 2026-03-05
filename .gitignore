@@ -1,41 +1,21 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Zależności (pobierane przez npm install)
+node_modules/
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# Pliki budowania (generowane przez npm run build)
+.next/
+out/
+build/
 
-# testing
-/coverage
+# DANE I WGRANE PLIKI (Kluczowe dla Twojej architektury)
+# Ignorujemy je, bo będą przechowywane w wolumenach Dockera na Proxmoxie
+data/db.json
+public/uploads/
 
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
+# Logi i pliki tymczasowe
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+.DS_Store
 
-# env files (can opt-in for committing if needed)
-.env*
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Środowisko (opcjonalnie, jeśli będziesz używać plików .env)
+.env*.local
